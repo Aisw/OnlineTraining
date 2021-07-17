@@ -1,0 +1,67 @@
+server:
+  port: 8888
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/onlinetraining?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+  servlet:
+    multipart:
+      enabled: true
+      #      最大支持文件大小
+      max-file-size: 20MB
+      #      最大支持请求大小
+      max-request-size: 20MB
+
+#  #redis配置
+#  redis:
+#    #Redis服务器地址
+#    host: 127.0.0.1
+#    #Redis服务器连接端口
+#    port: 6379
+#    #Redis数据库索引（默认为0）
+#    database: 0
+#    #连接池最大连接数（使用负值表示没有限制）
+#    jedis:
+#      pool.max-active: 50
+#      #连接池最大阻塞等待时间（使用负值表示没有限制）
+#      pool.max-wait: 3000
+#      #连接池中的最大空闲连接
+#      pool.max-idle: 20
+#      #连接池中的最小空闲连接
+#      pool.min-idle: 2
+#    #连接超时时间（毫秒）
+#    timeout: 5000
+
+
+mybatis:
+  type-aliases-package: com.example.train
+  mapper-locations: classpath:mappers/*.xml
+#  #开启驼峰命名和下划线映射
+#  configuration:
+#    map-underscore-to-camel-case: true
+#config:
+#  jwt:
+#    secret: online
+#    expire: 3600
+#    token: token
+
+#D:/OnlineTraining/src/main/resources/files/
+#/www/wwwroot/files/
+#url
+url: http://119.29.199.37
+#身份证照片存放地址
+imgPath: /www/wwwroot/files/cards/
+#电子书存放地址
+bookPath: /www/wwwroot/files/book/
+#音频和视频存放地址
+videoPath: /www/wwwroot/files/video/
+#培训资料图片存放地址：
+proPath: /www/wwwroot/files/program/
+#培训资料推荐图片
+recPath: /www/wwwroot/files/program/resources/
+#培训图片
+swiPath:  /www/wwwroot/files/program/

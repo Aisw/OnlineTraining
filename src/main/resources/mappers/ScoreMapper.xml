@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.ScoreDao">
+
+    <resultMap id="scoreMapper" type="com.example.train.pojo.Score">
+        <id column="id" property="id"/>
+        <result column="emp_id" property="empId"/>
+        <result column="doc_id" property="docId"/>
+        <result column="name" property="name"/>
+        <result column="time" property="time"/>
+        <result column="score" property="score"/>
+    </resultMap>
+
+    <insert id="insertScore" parameterType="com.example.train.pojo.Score" >
+        INSERT INTO integration(name,emp_id,doc_id,score,time)
+        VALUES (#{name},#{empId},#{docId},#{score},#{time})
+    </insert>
+
+    <select id="selectTotalByEmpId" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT SUM(score)
+        FROM integration
+        WHERE emp_id = #{empId}
+    </select>
+
+    <select id="selectByEmpId" resultMap="scoreMapper" parameterType="java.lang.Integer">
+        SELECT *
+        FROM integration
+        WHERE emp_id = #{empId}
+    </select>
+</mapper>

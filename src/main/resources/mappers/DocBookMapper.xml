@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.DocBookDao">
+
+    <resultMap id="docBookMapper" type="com.example.train.pojo.document.DocBook">
+        <id column="id" property="id"/>
+        <result column="docid" property="docId"/>
+        <result column="bookid" property="bookId"/>
+    </resultMap>
+
+    <insert id="insertDocBook" parameterType="com.example.train.pojo.document.DocBook">
+        INSERT INTO doc_book(docid,bookid) VALUES(#{docId},#{bookId})
+    </insert>
+</mapper>

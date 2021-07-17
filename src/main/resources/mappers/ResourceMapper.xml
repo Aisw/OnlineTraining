@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.ResourceDao">
+
+    <resultMap id="reaMapper" type="com.example.train.pojo.program.Resource">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="path" property="path"/>
+    </resultMap>
+
+    <insert id="insertResource" parameterType="com.example.train.pojo.program.Resource"
+    useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO resouce(name) VALUES (#{name})
+    </insert>
+
+    <update id="updateResource" parameterType="com.example.train.pojo.program.Resource">
+        UPDATE resouce
+        SET name = #{name},
+            type = #{type}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteResource" parameterType="java.lang.Integer">
+        DELETE
+        FROM resouce
+        WHERE id =#{id}
+    </delete>
+
+    <update id="updatePathById">
+        UPDATE resouce
+        SET path = #{path}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectPathById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT path
+        FROM resouce
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByResId" resultMap="reaMapper" parameterType="java.lang.Integer">
+        SELECT *
+        FROM resouce
+        WHERE id = #{resId}
+    </select>
+
+    <select id="selectResNamePathById" parameterType="java.lang.Integer" resultType="com.example.train.pojo.program.ResNamePath">
+        SELECT id,name,path,type
+        FROM resouce
+        WHERE id IN (
+            SELECT resource_id
+            FROM pro_res
+            WHERE program_id = #{id}
+            )
+        LIMIT 2
+    </select>
+</mapper>

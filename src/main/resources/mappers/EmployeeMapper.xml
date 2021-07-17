@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.EmployeeDao">
+
+    <resultMap id="employeeMapper" type="com.example.train.pojo.employee.Employee">
+        <id column="id" property="id"/>
+        <result column="password" property="password"/>
+        <result column="departid" property="departId"/>
+        <result column="name" property="name"/>
+        <result column="idnumber" property="idNumber"/>
+        <result column="sex" property="sex"/>
+        <result column="birthday" property="birthday"/>
+        <result column="unit" property="unit"/>
+        <result column="station" property="station"/>
+        <result column="first_degree" property="firstDegree"/>
+        <result column="second_degree" property="secondDegree"/>
+        <result column="phone" property="phone"/>
+        <result column="isadministrator" property="isAdministrator"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="employeeMapper">
+        SELECT id,departid,name,idnumber,sex,birthday,unit,station,first_degree,second_degree,phone,isadministrator
+        FROM employee
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByDepartId" resultMap="employeeMapper">
+        SELECT id,departid,name,idnumber,sex,birthday,unit,station,first_degree,second_degree,phone,isadministrator
+        FROM employee
+        WHERE departid = #{departId}
+    </select>
+
+    <select id="selectByEmploy" parameterType="com.example.train.pojo.employee.Employ" resultMap="employeeMapper">
+        SELECT id,departid,name,idnumber,sex,birthday,unit,station,first_degree,second_degree,phone,isadministrator
+        FROM employee
+        WHERE 1 = 1
+        <if test="name != null and name != '' ">
+            AND name = #{name}
+        </if>
+        <if test="sex != null and sex != ''">
+            AND sex = #{sex}
+        </if>
+        <if test="isAdministrator != null and isAdministrator !='' ">
+            AND isAdministrator = #{isAdministrator}
+        </if>
+    </select>
+
+<!--    <insert id="insertEmp" useGeneratedKeys="true" keyColumn="id">-->
+<!--        INSERT INTO employee(isadministrator) VALUES('否')-->
+<!--    </insert>-->
+
+    <insert id="insertEmployee" parameterType="com.example.train.pojo.employee.Employee" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO
+            employee(departid,name,idnumber,sex,birthday,unit,station,first_degree,second_degree,phone,isadministrator)
+        VALUES(#{departId},#{name},#{idNumber},
+               #{sex},#{birthday},#{unit},#{station},
+               #{firstDegree},#{secondDegree},#{phone},#{isAdministrator})
+    </insert>
+
+    <update id="updateEmployee" parameterType="com.example.train.pojo.employee.Employee">
+        UPDATE employee
+        SET departid = #{departId},
+            name = #{name},
+            password = #{password},
+            idnumber = #{idNumber},
+            sex = #{sex},
+            birthday = #{birthday},
+            unit = #{unit},
+            station = #{station},
+            first_degree = #{firstDegree},
+            second_degree = #{secondDegree},
+            phone = #{phone},
+            isadministrator = #{isAdministrator}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteEmployeeById" parameterType="java.lang.Integer">
+        DELETE
+        FROM employee
+        WHERE id = #{id}
+    </delete>
+
+    <insert id="uploadIdentityphoto" parameterType="com.example.train.pojo.employee.EmployIdentity">
+        INSERT INTO
+            emp_ide(empId,path)
+        VALUES(#{empId},#{path})
+    </insert>
+
+    <select id="selectPathByEmpId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT path
+        FROM emp_ide
+        WHERE empId = #{empId}
+    </select>
+
+    <delete id="deleteEmpIde" parameterType="java.lang.Integer">
+        DELETE
+        FROM emp_ide
+        WHERE empid = #{empId}
+    </delete>
+</mapper>

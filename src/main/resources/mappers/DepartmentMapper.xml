@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.DepartmentDao">
+
+    <resultMap id="departmentMapper" type="com.example.train.pojo.depart.Department">
+        <id column="id" property="id"/>
+        <result column="supernode" property="superId"/>
+        <result column="name" property="label"/>
+        <collection property="children" ofType="com.example.train.pojo.depart.Department" column="id"
+                    select="com.example.train.dao.DepartmentDao.selectBySuperId"></collection>
+    </resultMap>
+
+    <select id="selectById" resultMap="departmentMapper">
+        SELECT *
+        FROM organization
+        WHERE id=#{id}
+    </select>
+
+    <select id="selectBySuperId" resultMap="departmentMapper">
+        SELECT *
+        FROM organization
+        WHERE supernode = #{id}
+    </select>
+
+    <resultMap id="depMapper" type="com.example.train.pojo.depart.Depart">
+        <id property="id" column="id"/>
+        <result property="superId" column="superid"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <select id="selectAll" resultMap="depMapper">
+        SELECT id,name
+        FROM organization
+    </select>
+
+    <select id="selectDepartById" resultMap="depMapper">
+        SELECT *
+        FROM organization
+        WHERE id = #{id}
+    </select>
+    
+    <update id="updateDep" parameterType="com.example.train.pojo.depart.Depart">
+        UPDATE organization
+        SET supernode = #{parent}
+        WHERE organization.id = #{son}
+    </update>
+
+    <update id="updateDepart" parameterType="com.example.train.pojo.depart.Depart">
+        UPDATE organization
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteDepartById" parameterType="java.lang.Integer">
+        DELETE
+        FROM organization
+        WHERE id = #{id}
+    </delete>
+
+<!--    <delete id="deleteDepartBySuperId" parameterType="java.lang.Integer">-->
+<!--        DELETE-->
+<!--        FROM organization-->
+<!--        WHERE supernode = #{superId}-->
+<!--    </delete>-->
+
+    <select id="selectIdBySuperId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT id
+        FROM organization
+        WHERE supernode = #{id}
+    </select>
+</mapper>

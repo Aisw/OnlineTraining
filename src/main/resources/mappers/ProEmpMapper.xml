@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.ProEmpDao">
+
+    <resultMap id="proEmpMapper" type="com.example.train.pojo.program.ProEmp">
+        <id column="id" property="id"/>
+        <result column="pro_id" property="proId"/>
+        <result column="emp_id" property="empId"/>
+    </resultMap>
+
+    <insert id="insertProEmp">
+        INSERT INTO pro_emp(pro_id,emp_id) VALUES(#{proId},#{empId})
+    </insert>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.train.dao.ProgramDao">
+
+    <resultMap id="programMapper" type="com.example.train.pojo.program.Program">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="type" property="type"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="status" property="status"/>
+        <result column="scope" property="scope"/>
+        <result column="visible" property="visible"/>
+    </resultMap>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="programMapper">
+        SELECT *
+        FROM program
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="programMapper">
+        SELECT *
+        FROM program
+        ORDER BY publish_time DESC
+    </select>
+
+    <select id="selectByProgramDes" resultMap="programMapper" parameterType="com.example.train.pojo.program.ProgramDes">
+        SELECT *
+        FROM program
+        WHERE 1=1
+        <if test="title != null and title !=''">
+            AND title = #{title}
+        </if>
+        <if test="type != null and type !=''">
+            AND type = #{type}
+        </if>
+        <if test="time != null">
+            AND publish_time = #{time}
+        </if>
+        <if test="status !=null and status != ''">
+            AND status = #{status}
+        </if>
+    </select>
+
+    <update id="updateStatus" >
+        UPDATE program
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteProgram" parameterType="java.lang.Integer">
+        DELETE
+        FROM program
+        WHERE id =#{id}
+    </delete>
+
+    <insert id="insertProgram" parameterType="com.example.train.pojo.program.Program" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO program(status) VALUES(#{status})
+    </insert>
+
+    <update id="updateProgram" parameterType="com.example.train.pojo.program.Program">
+        UPDATE program
+        SET title = #{title},
+            type = #{type},
+            publish_time = #{publishTime},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            scope = #{scope}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateProgramPathById">
+        UPDATE program
+        SET path = #{path}
+        WHERE id = #{id}
+    </update>
+
+    <resultMap id="proMapper" type="com.example.train.pojo.program.ProNamePath">
+        <id column="id" property="id"/>
+        <result column="title" property="name"/>
+        <result column="path" property="path"/>
+        <collection property="resNamePathList" ofType="com.example.train.pojo.program.ResNamePath" column="id"
+                    select="com.example.train.dao.ResourceDao.selectResNamePathById"></collection>
+    </resultMap>
+
+    <select id="selectProNamePath" resultMap="proMapper">
+        SELECT *
+        FROM program
+        ORDER BY publish_time
+        LIMIT 3
+    </select>
+
+    <select id="selectProNamePathByEmpId" parameterType="java.lang.Integer" resultMap="proMapper">
+        SELECT *
+        FROM program
+        WHERE status = '发布' AND
+              id IN (SELECT pro_id
+                    FROM pro_emp
+                    WHERE emp_id = #{empId})
+        ORDER BY publish_time
+    </select>
+</mapper>
